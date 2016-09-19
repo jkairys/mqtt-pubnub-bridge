@@ -91,6 +91,12 @@ def on_message(client, userdata, msg):
     ob['weather'][station][qty] = pl
     ob['weather']['ttl'] = 500
 
+  if(path[0] == "inverter" and path[1] != "{station}"):
+    qty = path[1]
+
+    ob['inverter'][qty] = pl
+    ob['inverter']['ttl'] = 500
+
   #payload = msg.payload.decode('utf-8').strip()
   #print("MQTT message: "+msg.topic+" "+str(msg.payload.decode('utf-8')))
 
@@ -117,6 +123,6 @@ while True:
       publish = copy.copy(ob[o])
       del(publish['ttl'])
       print("Updating {o} - {v}".format(o=o, v=publish))
-      
+
       pubnub.publish(channel=o, message=ob[o])
       ob[o]['ttl'] = None
